@@ -16,7 +16,7 @@
 #define BMI270_I2C_ADDR UINT8_C(0x68)
 #define READ_WRITE_LEN UINT8_C(16)
 
-static struct bmi2_dev bmi_dev;
+struct bmi2_dev bmi_dev;
 
 /*!
  * I2C read function map to STM platform
@@ -79,5 +79,5 @@ void bmi270_STM_init()
 	}
 
 	// Device is now ready
-	printf("BMI2 initialized. Chip ID: 0x%02X\n\r", bmi_dev.chip_id);
+	printf("BMI270 ID: 0x%02X\n\r", bmi_dev.chip_id);
 }
