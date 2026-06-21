@@ -23,6 +23,8 @@
 #include "main.h"
 #include "cmsis_os.h"
 
+#include "usb_device.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "main_task.h"
@@ -157,6 +159,8 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
+  /* init code for USB_Device */
+  MX_USB_Device_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   for (;;)

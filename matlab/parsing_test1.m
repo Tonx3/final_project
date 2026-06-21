@@ -1,7 +1,7 @@
 clear; clc;
 
-port = "COM7";
-baud = 115200;
+port = "COM8";
+baud = 500000;
 numChannels = 8;
 
 HEADER = uint8([hex2dec("AA"), hex2dec("55")]);

@@ -15,6 +15,7 @@
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
+#include "usbd_cdc_if.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -82,7 +83,6 @@ void adsTask(void *argument)
 	ADS_SendCommand(&ads_dev, ADS_START);
 	vTaskDelay(pdMS_TO_TICKS(10));
 
-
 	ads_data_point_t data_point;
 
 	HAL_TIM_Base_Start_IT(&htim6);
@@ -139,8 +139,12 @@ void ADS_SendDataPointUART(UART_HandleTypeDef *huart,
         memcpy(&packet[idx], &data_point->channel[i], 4);
         idx += 4;
     }
+    uint8_t busy = CDC_Transmit_FS((uint8_t*)packet, idx);
 
-    HAL_UART_Transmit(huart, packet, idx, HAL_MAX_DELAY);
+    if(busy){
+    	printf("missed transmit\n\r");
+    }
+    //HAL_UART_Transmit(huart, packet, idx, HAL_MAX_DELAY);
 }
 
 
