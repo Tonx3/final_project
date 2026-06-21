@@ -46,54 +46,28 @@ void adsTask(void *argument)
 
     vTaskDelay(pdMS_TO_TICKS(10));
 
-    ADS_WriteRegister(&ads_dev, ADS_REG_CONFIG3, 0xE0);
-    vTaskDelay(pdMS_TO_TICKS(10));
-    ADS_WriteRegister(&ads_dev, ADS_REG_CONFIG1, 0x90);
-    vTaskDelay(pdMS_TO_TICKS(10));
-    ADS_WriteRegister(&ads_dev, ADS_REG_CONFIG2, 0xC0);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH1SET, 0x01);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH2SET, 0x01);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH3SET, 0x01);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH4SET, 0x01);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH5SET, 0x01);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH6SET, 0x01);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH7SET, 0x01);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH8SET, 0x01);
-	vTaskDelay(pdMS_TO_TICKS(10));
+    ADS_WriteRegister(&ads_dev, ADS_REG_CONFIG1, 0x96);      // 250 SPS
+    ADS_WriteRegister(&ads_dev, ADS_REG_CONFIG2, 0xC0);		 // default
+    ADS_WriteRegister(&ads_dev, ADS_REG_CONFIG3, 0xEC);		 // enable internal ref buffer, bias is connected, biasREF is internal
+
+    ADS_WriteRegister(&ads_dev, ADS_REG_MISC1, 0x20);        // SRB1 common reference
+
+    ADS_WriteRegister(&ads_dev, ADS_REG_CH1SET, 0x60);       // CH1 on, gain 24, normal input
+
+    ADS_WriteRegister(&ads_dev, ADS_REG_CH2SET, 0x81); // default for turned off and input shorted
+    ADS_WriteRegister(&ads_dev, ADS_REG_CH3SET, 0x81);
+    ADS_WriteRegister(&ads_dev, ADS_REG_CH4SET, 0x81);
+    ADS_WriteRegister(&ads_dev, ADS_REG_CH5SET, 0x81);
+    ADS_WriteRegister(&ads_dev, ADS_REG_CH6SET, 0x81);
+    ADS_WriteRegister(&ads_dev, ADS_REG_CH7SET, 0x81);
+    ADS_WriteRegister(&ads_dev, ADS_REG_CH8SET, 0x81);
+
+    ADS_WriteRegister(&ads_dev, ADS_REG_BIAS_SENSP, 0x01);   // CH1P contributes to bias
+    ADS_WriteRegister(&ads_dev, ADS_REG_BIAS_SENSN, 0x00);
 
 	ADS_SendCommand(&ads_dev, ADS_START);
 	vTaskDelay(pdMS_TO_TICKS(10));
 
-	// Options for test signal (1 mV x VREF / 2.4)  Square-Wave
-	ADS_WriteRegister(&ads_dev, ADS_REG_CONFIG2, 0xD0);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH1SET, 0x05);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH2SET, 0x05);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH3SET, 0x05);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH4SET, 0x05);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH5SET, 0x05);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH6SET, 0x05);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH7SET, 0x05);
-	vTaskDelay(pdMS_TO_TICKS(10));
-	ADS_WriteRegister(&ads_dev, ADS_REG_CH8SET, 0x05);
-	vTaskDelay(pdMS_TO_TICKS(10));
-
-	//ADS_SendCommand(&ads_dev, ADS_RDATAC);
-	//vTaskDelay(pdMS_TO_TICKS(10));
 
 	ads_data_point_t data_point;
 
@@ -115,7 +89,7 @@ void adsTask(void *argument)
 	    printf("\r\n");
 */
 
-	   printf("%ld\r\n", (long)data_point.channel[1]);
+	   printf("%ld\r\n", (long)data_point.channel[0]);
 
 	   // vTaskDelay(pdMS_TO_TICKS(1000));
 	}

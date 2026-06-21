@@ -21,6 +21,7 @@
 #include "cmsis_os.h"
 #include "i2c.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -94,6 +95,7 @@ int main(void)
   MX_SPI1_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(SPI1_CS_ADS_GPIO_Port, SPI1_CS_ADS_Pin, GPIO_PIN_SET);
   /* USER CODE END 2 */
